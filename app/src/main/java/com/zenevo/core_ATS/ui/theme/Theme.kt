@@ -1,6 +1,5 @@
 package com.zenevo.core_ATS.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -17,27 +16,26 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Pink80
 )
 
+// UPDATED LightColorScheme to use your brand colors
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = PrimaryBlue, // Used for focused text fields, buttons, etc.
     secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    tertiary = Pink40,
+    background = PrimaryWhite,
+    surface = PrimaryWhite,
+    onPrimary = PrimaryWhite,
+    onSecondary = PrimaryBlack,
+    onTertiary = PrimaryBlack,
+    onBackground = PrimaryBlack,
+    onSurface = PrimaryBlack,
 )
 
 @Composable
 fun CoreTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    // Force light theme by setting darkTheme to false
+    darkTheme: Boolean = false,
+    // Dynamic color is available on Android 12+ but disabled to maintain consistent UI
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
