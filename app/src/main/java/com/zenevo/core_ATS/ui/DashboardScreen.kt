@@ -144,7 +144,7 @@ fun SelfieCaptureView(navController: NavController) {
                     .background(Gray800, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Default.PhotoCamera, contentDescription = "Camera", tint = Gray400, modifier = Modifier.size(80.dp))
+                Icon(Icons.Default.CameraAlt, contentDescription = "Camera", tint = Gray400, modifier = Modifier.size(80.dp))
             }
         }
 
