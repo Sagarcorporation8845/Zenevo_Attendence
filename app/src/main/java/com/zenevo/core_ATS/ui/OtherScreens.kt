@@ -92,8 +92,8 @@ fun AttendanceSuccessScreen(navController: NavController) {
 fun HistoryScreen(navController: NavController) {
     val historyItems = listOf(
         HistoryItem("July 22, 2024", "Marked", "9:00 AM", SuccessBg, SuccessText, Icons.Default.CheckCircle),
-        HistoryItem("July 21, 2024", "Late", "9:15 AM", WarningBg, WarningText, Icons.Default.HourglassBottom),
-        HistoryItem("July 20, 2024", "Absent", null, DangerBg, DangerText, Icons.Default.Cancel),
+        HistoryItem("July 21, 2024", "Late", "9:15 AM", WarningBg, WarningText, Icons.Default.Schedule),
+        HistoryItem("July 20, 2024", "Absent", null, DangerBg, DangerText, Icons.Default.Close),
         HistoryItem("July 19, 2024", "Marked", "9:01 AM", SuccessBg, SuccessText, Icons.Default.CheckCircle),
         HistoryItem("July 18, 2024", "Marked", "9:03 AM", SuccessBg, SuccessText, Icons.Default.CheckCircle),
     )
@@ -104,7 +104,7 @@ fun HistoryScreen(navController: NavController) {
                 title = { Text("Attendance History", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.Default.ArrowBackIosNew, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = { Spacer(modifier = Modifier.width(48.dp)) },
@@ -234,14 +234,14 @@ fun ProfileScreen(navController: NavController) {
             ) {
                 ProfileMenuItem(
                     text = "Change Password",
-                    icon = Icons.Default.VpnKey,
+                    icon = Icons.Default.Lock,
                     iconBgColor = Color(0xFFE0E7FF),
                     iconColor = Color(0xFF4338CA)
                 )
                 Divider(color = Gray200)
                 ProfileMenuItem(
                     text = "Log Out",
-                    icon = Icons.Default.Logout,
+                    icon = Icons.Default.ExitToApp,
                     iconBgColor = Red100,
                     iconColor = Red500,
                     textColor = Red500
@@ -272,7 +272,7 @@ fun ProfileMenuItem(text: String, icon: ImageVector, iconBgColor: Color, iconCol
             Spacer(modifier = Modifier.width(16.dp))
             Text(text, fontWeight = FontWeight.Medium, color = textColor)
         }
-        Icon(Icons.Default.ArrowForwardIos, contentDescription = null, tint = Gray400, modifier = Modifier.size(16.dp))
+        Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Gray400, modifier = Modifier.size(16.dp))
     }
 }
 

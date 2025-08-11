@@ -88,7 +88,7 @@ fun LoginScreen(navController: NavController) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 shape = RoundedCornerShape(8.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
+                colors = OutlinedTextFieldDefaults.colors(
                     containerColor = Gray100,
                     unfocusedBorderColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent,
@@ -107,7 +107,7 @@ fun LoginScreen(navController: NavController) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
                 shape = RoundedCornerShape(8.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
+                colors = OutlinedTextFieldDefaults.colors(
                     containerColor = Gray100,
                     unfocusedBorderColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent,
