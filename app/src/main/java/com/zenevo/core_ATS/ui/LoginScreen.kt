@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -23,19 +24,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.zenevo.core_ATS.security.SecurityLogger
+import com.zenevo.core_ATS.security.SecurityEventType
+import com.zenevo.core_ATS.security.LogLevel
 import com.zenevo.core_ATS.ui.theme.*
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val isButtonEnabled = email.isNotBlank() && password.isNotBlank()
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    val isButtonEnabled = email.isNotBlank() && password.isNotBlank() && !isLoading
+    
+    val context = LocalContext.current
+    val securityLogger = SecurityLogger.getInstance()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         bottomBar = {
             TextButton(
-                onClick = { /* Non-functional for MVP */ },
+                onClick = { navController.navigate("forgot-password") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -115,9 +126,68 @@ fun LoginScreen(navController: NavController) {
                     cursorColor = BrandPrimary
                 )
             )
+            
+            // Error message
+            errorMessage?.let { message ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    colors = CardDefaults.cardColors(containerColor = DangerBg)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Error,
+                            contentDescription = "Error",
+                            tint = DangerText
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = message,
+                            color = DangerText,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+            }
+            
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { navController.navigate("dashboard") },
+                onClick = {
+                    scope.launch {
+                        isLoading = true
+                        errorMessage = null
+                        
+                        // Simulate login validation
+                        kotlinx.coroutines.delay(1000)
+                        
+                        // For demo purposes, let's assume login is successful for valid email format
+                        if (email.contains("@") && password.length >= 6) {
+                            securityLogger.logSecurityEvent(
+                                eventType = SecurityEventType.LOGIN_SUCCESS,
+                                username = email,
+                                details = "User: $email (ID: 1)",
+                                ipAddress = "42.104.219.164",
+                                severity = LogLevel.INFO
+                            )
+                            navController.navigate("dashboard")
+                        } else {
+                            securityLogger.logSecurityEvent(
+                                eventType = SecurityEventType.LOGIN_FAILED,
+                                username = email,
+                                details = "Invalid credentials",
+                                ipAddress = "42.104.219.164",
+                                severity = LogLevel.WARNING
+                            )
+                            errorMessage = "Invalid email or password"
+                        }
+                        
+                        isLoading = false
+                    }
+                },
                 enabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,7 +198,15 @@ fun LoginScreen(navController: NavController) {
                     disabledContainerColor = BrandPrimary.copy(alpha = 0.5f)
                 )
             ) {
-                Text("Login", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Login", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }

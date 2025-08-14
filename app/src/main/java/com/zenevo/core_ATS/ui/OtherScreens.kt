@@ -236,7 +236,16 @@ fun ProfileScreen(navController: NavController) {
                     text = "Change Password",
                     icon = Icons.Default.VpnKey,
                     iconBgColor = Color(0xFFE0E7FF),
-                    iconColor = Color(0xFF4338CA)
+                    iconColor = Color(0xFF4338CA),
+                    onClick = { navController.navigate("forgot-password") }
+                )
+                Divider(color = Gray200)
+                ProfileMenuItem(
+                    text = "Security Audit Logs",
+                    icon = Icons.Default.Security,
+                    iconBgColor = Color(0xFFFEF3C7),
+                    iconColor = Color(0xFFD97706),
+                    onClick = { navController.navigate("security-audit") }
                 )
                 Divider(color = Gray200)
                 ProfileMenuItem(
@@ -244,7 +253,8 @@ fun ProfileScreen(navController: NavController) {
                     icon = Icons.Default.Logout,
                     iconBgColor = Red100,
                     iconColor = Red500,
-                    textColor = Red500
+                    textColor = Red500,
+                    onClick = { navController.navigateUp() }
                 )
             }
         }
@@ -252,7 +262,14 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-fun ProfileMenuItem(text: String, icon: ImageVector, iconBgColor: Color, iconColor: Color, textColor: Color = Gray900) {
+fun ProfileMenuItem(
+    text: String, 
+    icon: ImageVector, 
+    iconBgColor: Color, 
+    iconColor: Color, 
+    textColor: Color = Gray900,
+    onClick: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,7 +277,10 @@ fun ProfileMenuItem(text: String, icon: ImageVector, iconBgColor: Color, iconCol
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
+        ) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
@@ -272,7 +292,9 @@ fun ProfileMenuItem(text: String, icon: ImageVector, iconBgColor: Color, iconCol
             Spacer(modifier = Modifier.width(16.dp))
             Text(text, fontWeight = FontWeight.Medium, color = textColor)
         }
-        Icon(Icons.Default.ArrowForwardIos, contentDescription = null, tint = Gray400, modifier = Modifier.size(16.dp))
+        IconButton(onClick = onClick) {
+            Icon(Icons.Default.ArrowForwardIos, contentDescription = null, tint = Gray400, modifier = Modifier.size(16.dp))
+        }
     }
 }
 
